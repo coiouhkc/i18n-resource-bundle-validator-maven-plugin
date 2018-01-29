@@ -7,6 +7,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 @Mojo(name = "i18n-resource-validator", threadSafe = true)
 public class I18nValidationMojo extends AbstractMojo {
@@ -19,12 +20,12 @@ public class I18nValidationMojo extends AbstractMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         try {
-            boolean isConsistent = new I18nPropertiesValidator().isConsistent(basenameRegex);
+            boolean isConsistent = new I18nPropertiesValidator().isConsistent(basenameRegex, getLog());
             if (!isConsistent) {
-                throw new MojoFailureException("");
+                throw new MojoFailureException(MessageFormat.format("Resource bundle specified by {0} is not consistent, see previous error output for details on missing keys", basenameRegex));
             }
         } catch (IOException e) {
-            throw new MojoExecutionException("", e);
+            throw new MojoExecutionException(MessageFormat.format("Error parsing resource bundle specified by {0}", basenameRegex), e);
         }
     }
 }

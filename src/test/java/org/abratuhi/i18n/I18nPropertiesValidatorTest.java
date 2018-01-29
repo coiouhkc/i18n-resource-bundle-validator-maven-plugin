@@ -1,5 +1,6 @@
 package org.abratuhi.i18n;
 
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -13,13 +14,13 @@ public class I18nPropertiesValidatorTest {
 
     @Test
     public void testNegative() throws IOException {
-        boolean actual = validator.isConsistent("src/test/resources/negative/negative.*\\.properties");
+        boolean actual = validator.isConsistent("src/test/resources/negative/negative.*\\.properties", new SystemStreamLog());
         assertFalse("", actual);
     }
 
     @Test
     public void testPositive() throws IOException {
-        boolean actual = validator.isConsistent("src/test/resources/positive/positive.*\\.properties");
+        boolean actual = validator.isConsistent("src/test/resources/positive/positive.*\\.properties", new SystemStreamLog());
         assertTrue("", actual);
     }
 }
